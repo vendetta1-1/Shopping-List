@@ -1,11 +1,13 @@
 package com.vendetta.shoppinglist.domain
 
-import androidx.room.PrimaryKey
 
 data class ShopItem(
-    @PrimaryKey
-    val id: UInt,
     val name: String,
     val count: Int,
-    val isActive: Boolean
-)
+    val isActive: Boolean,
+    var id: Int = UNDEFINED_ID,
+) {
+    companion object {
+        const val UNDEFINED_ID = -1
+    }
+}
