@@ -1,9 +1,8 @@
-package com.vendetta.shoppinglist.presenatation
+package com.vendetta.shoppinglist.presentation
 
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.vendetta.shoppinglist.R
 
@@ -19,6 +18,6 @@ class MainActivity : AppCompatActivity() {
             Log.d("MainActivityTest", it.toString())
         }
 
-
+    
     }
 }

@@ -1,6 +1,5 @@
-package com.vendetta.shoppinglist.presenatation
+package com.vendetta.shoppinglist.presentation
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.vendetta.shoppinglist.data.ShopListRepositoryImpl
 import com.vendetta.shoppinglist.domain.DeleteShopItemUseCase
