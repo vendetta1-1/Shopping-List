@@ -1,6 +1,7 @@
 package com.vendetta.shoppinglist.presentation
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentContainerView
@@ -10,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.vendetta.shoppinglist.R
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), ShopItemFragment.OnEditingFinishedListener {
 
     private lateinit var viewModel: MainViewModel
     private lateinit var shopListAdapter: ShopListAdapter
@@ -35,6 +36,7 @@ class MainActivity : AppCompatActivity() {
                 val intent = ShopItemActivity.newIntentAddItem(this)
                 startActivity(intent)
             } else {
+                onEditingFinished()
                 launchFragment(ShopItemFragment.newInstanceAddItem())
             }
         }
@@ -51,7 +53,6 @@ class MainActivity : AppCompatActivity() {
             .addToBackStack(null)
             .commit()
     }
-
 
 
     private fun setupRecyclerView() {
@@ -113,5 +114,10 @@ class MainActivity : AppCompatActivity() {
         shopListAdapter.onShopItemLongClickListener = {
             viewModel.changeEnableState(it)
         }
+    }
+
+    override fun onEditingFinished() {
+        Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show()
+        supportFragmentManager.popBackStack()
     }
 }

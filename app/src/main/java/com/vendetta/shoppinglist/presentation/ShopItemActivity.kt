@@ -9,7 +9,7 @@ import com.vendetta.shoppinglist.domain.ShopItem
 import com.vendetta.shoppinglist.presentation.ShopItemFragment.Companion.newInstanceAddItem
 import com.vendetta.shoppinglist.presentation.ShopItemFragment.Companion.newInstanceEditItem
 
-class ShopItemActivity : AppCompatActivity() {
+class ShopItemActivity : AppCompatActivity(), ShopItemFragment.OnEditingFinishedListener {
 
 
     private var screenMode = MODE_UNKNOWN
@@ -31,7 +31,8 @@ class ShopItemActivity : AppCompatActivity() {
             MODE_ADD -> newInstanceAddItem()
             else -> throw RuntimeException("Unknown screen mode $screenMode")
         }
-        supportFragmentManager.beginTransaction().replace(R.id.shop_item_container, fragment).commit()
+        supportFragmentManager.beginTransaction().replace(R.id.shop_item_container, fragment)
+            .commit()
     }
 
 
@@ -73,5 +74,9 @@ class ShopItemActivity : AppCompatActivity() {
             intent.putExtra(EXTRA_SHOP_ITEM_ID, shopItemId)
             return intent
         }
+    }
+
+    override fun onEditingFinished() {
+        finish()
     }
 }

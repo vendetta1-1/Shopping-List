@@ -1,5 +1,6 @@
 package com.vendetta.shoppinglist.presentation
 
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -12,12 +13,13 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.textfield.TextInputLayout
 import com.vendetta.shoppinglist.R
-import com.vendetta.shoppinglist.domain.ShopItem
 import com.vendetta.shoppinglist.domain.ShopItem.Companion.UNDEFINED_ID
 
 class ShopItemFragment : Fragment() {
 
     private lateinit var viewModel: ShopItemViewModel
+
+    private lateinit var onEditingFinishedListener: OnEditingFinishedListener
 
     private lateinit var textInputLayoutName: TextInputLayout
     private lateinit var textInputLayoutCount: TextInputLayout
@@ -27,6 +29,16 @@ class ShopItemFragment : Fragment() {
 
     private var screenMode: String = MODE_UNKNOWN
     private var shopItemId: Int = UNDEFINED_ID
+
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is OnEditingFinishedListener) {
+            onEditingFinishedListener = context
+        } else {
+            throw RuntimeException("Activity must implement OnEditingFinishedListener")
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,7 +82,7 @@ class ShopItemFragment : Fragment() {
             textInputLayoutName.error = message
         }
         viewModel.shouldCloseScreen.observe(viewLifecycleOwner) {
-            activity?.onBackPressed()
+            onEditingFinishedListener.onEditingFinished()
         }
     }
 
@@ -150,6 +162,9 @@ class ShopItemFragment : Fragment() {
         buttonSave = view.findViewById(R.id.button_save)
     }
 
+    interface OnEditingFinishedListener {
+        fun onEditingFinished()
+    }
 
     companion object {
 
