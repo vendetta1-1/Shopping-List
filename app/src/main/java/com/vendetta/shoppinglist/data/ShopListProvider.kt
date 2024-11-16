@@ -15,7 +15,7 @@ class ShopListProvider : ContentProvider() {
     }
 
     override fun onCreate(): Boolean {
-        return true
+        return false
     }
 
     override fun query(
