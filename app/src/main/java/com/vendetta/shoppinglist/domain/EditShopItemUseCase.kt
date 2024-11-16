@@ -1,8 +1,10 @@
 package com.vendetta.shoppinglist.domain
 
-class EditShopItemUseCase(private val shopListRepository: ShopListRepository) {
+import javax.inject.Inject
 
-   suspend fun editShopItem(shopItem: ShopItem) {
+class EditShopItemUseCase @Inject constructor(private val shopListRepository: ShopListRepository) {
+
+    suspend fun editShopItem(shopItem: ShopItem) {
         shopListRepository.editShopItem(shopItem)
     }
 }

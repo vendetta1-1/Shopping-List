@@ -1,18 +1,15 @@
 package com.vendetta.shoppinglist.data
 
-import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import com.vendetta.shoppinglist.domain.ShopItem
 import com.vendetta.shoppinglist.domain.ShopListRepository
+import javax.inject.Inject
 
-class ShopListRepositoryImpl(
-    application: Application
+class ShopListRepositoryImpl @Inject constructor(
+    val mapper: ShopListMapper,
+    val shopListDao: ShopListDao
 ) : ShopListRepository {
-
-    private val shopListDao = AppDataBase.getInstance(application).shopListDao()
-
-    private val mapper = ShopListMapper()
 
 
     override suspend fun addShopItem(shopItem: ShopItem) {

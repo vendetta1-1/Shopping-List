@@ -1,24 +1,20 @@
 package com.vendetta.shoppinglist.presentation
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.vendetta.shoppinglist.data.ShopListRepositoryImpl
 import com.vendetta.shoppinglist.domain.DeleteShopItemUseCase
 import com.vendetta.shoppinglist.domain.EditShopItemUseCase
 import com.vendetta.shoppinglist.domain.GetShopListUseCase
 import com.vendetta.shoppinglist.domain.ShopItem
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MainViewModel(application: Application) : AndroidViewModel(application) {
+class MainViewModel @Inject constructor(
+    private val getShopListUseCase: GetShopListUseCase,
+    private val deleteShopItemUseCase: DeleteShopItemUseCase,
+    private val editShopItemUseCase: EditShopItemUseCase
+) : ViewModel() {
 
-    private val repository = ShopListRepositoryImpl(application)
-
-    private val getShopListUseCase = GetShopListUseCase(repository)
-
-    private val deleteShopItemUseCase = DeleteShopItemUseCase(repository)
-
-    private val editShopItemUseCase = EditShopItemUseCase(repository)
 
     val shopList = getShopListUseCase.getShopList()
 
