@@ -23,6 +23,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <provider
+            android:authorities="com.vendetta.shoppinglist"
+            android:name=".data.ShopListProvider"
+            android:exported="true">
+        </provider>
+
     </application>
 
 </manifest>

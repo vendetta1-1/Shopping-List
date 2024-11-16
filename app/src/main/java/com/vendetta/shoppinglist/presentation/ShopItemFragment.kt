@@ -9,23 +9,34 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.vendetta.shoppinglist.ShoppingListApplication
 import com.vendetta.shoppinglist.databinding.FragmentShopItemBinding
 import com.vendetta.shoppinglist.domain.ShopItem.Companion.UNDEFINED_ID
+import javax.inject.Inject
 
 class ShopItemFragment : Fragment() {
+
+    private lateinit var viewModel: ShopItemViewModel
+    private lateinit var onEditingFinishedListener: OnEditingFinishedListener
+
 
     private var _binding: FragmentShopItemBinding? = null
     private val binding: FragmentShopItemBinding
         get() = _binding ?: throw RuntimeException("FragmentShopItemBinding == null")
 
-    private lateinit var viewModel: ShopItemViewModel
-    private lateinit var onEditingFinishedListener: OnEditingFinishedListener
-
     private var screenMode: String = MODE_UNKNOWN
     private var shopItemId: Int = UNDEFINED_ID
 
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
+
+    private val component by lazy {
+        (requireActivity().application as ShoppingListApplication).component
+    }
+
 
     override fun onAttach(context: Context) {
+        component.inject(this)
         super.onAttach(context)
         if (context is OnEditingFinishedListener) {
             onEditingFinishedListener = context
@@ -51,7 +62,7 @@ class ShopItemFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this)[ShopItemViewModel::class.java]
+        viewModel = ViewModelProvider(this, viewModelFactory)[ShopItemViewModel::class.java]
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
         addTextChangeListeners()
@@ -104,10 +115,6 @@ class ShopItemFragment : Fragment() {
 
     private fun launchEditMode() {
         viewModel.getShopItem(shopItemId)
-        viewModel.shopItem.observe(viewLifecycleOwner) {
-            binding.editTextName.setText(it.name)
-            binding.editTextCount.setText(it.count.toString())
-        }
         binding.buttonSave.setOnClickListener {
             viewModel.editShopItem(
                 binding.editTextName.text?.toString(),
